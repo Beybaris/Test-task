@@ -1,7 +1,7 @@
 import 'package:application/data/model/roles_model.dart';
-import 'package:application/data/model/userData_model.dart';
+import 'package:application/data/model/user_data_model.dart';
 
-class AuthTokensModel {
+class UserModel {
   int? id;
   bool? status;
   String? login;
@@ -10,11 +10,11 @@ class AuthTokensModel {
   String? tokenExpired;
   String? refreshToken;
   String? refreshTokenExpired;
-  Null? avatar;
+  String? avatar;
   UserData? userData;
   List<Roles>? roles;
 
-  AuthTokensModel(
+  UserModel(
       {this.id,
       this.status,
       this.login,
@@ -27,7 +27,7 @@ class AuthTokensModel {
       this.userData,
       this.roles});
 
-  AuthTokensModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
     login = json['login'];

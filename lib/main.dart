@@ -1,10 +1,28 @@
-import 'package:application/bloc/auth_bloc.dart';
-import 'package:application/bloc/auth_event.dart';
-import 'package:application/bloc/auth_state.dart';
-import 'package:application/data/service/auth_service.dart';
+import 'package:application/bloc/login_bloc.dart';
+import 'package:application/bloc/login_event.dart';
+import 'package:application/bloc/login_state.dart';
+import 'package:application/data/service/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Auth Bloc',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: SignInScreen(),
+    );
+  }
+}
 
 class SignInScreen extends StatelessWidget {
   @override
@@ -14,7 +32,7 @@ class SignInScreen extends StatelessWidget {
         title: Text('Sign In'),
       ),
       body: BlocProvider(
-        create: (context) => AuthBloc(AuthService()),
+        create: (context) => LoginBloc(LoginService()),
         child: SignInForm(),
       ),
     );
@@ -26,21 +44,19 @@ class SignInForm extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final authBloc = BlocProvider.of<AuthBloc>(context);
+    final authBloc = BlocProvider.of<LoginBloc>(context);
 
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) async {
-        if (state is AuthError) {
+        if (state is LoginFailure) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('error'),
             duration: Duration(seconds: 2),
           ));
-        } else if (state is AuthSuccess) {
-          final String token = state.token;
-          // Store the token securely using shared_preferences
+        } else if (state is LoginSuccess) {
+          final String token = state.user.token!;
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
-          // Navigate to the next screen
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => NextScreen()),
@@ -69,7 +85,7 @@ class SignInForm extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 authBloc.add(
-                  SignInEvent(
+                  LoginUser(
                     emailController.text,
                     passwordController.text,
                   ),
