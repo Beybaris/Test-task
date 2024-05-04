@@ -1,13 +1,13 @@
 class UserData {
   int? id;
-  Null? sex;
+  String? sex;
   String? documentID;
-  Null? birthday;
-  Null? fathername;
+  String? birthday;
+  String? fathername;
   String? firstname;
   String? lastname;
   String? phone;
-  Null? nationality;
+  String? nationality;
 
   UserData(
       {this.id,

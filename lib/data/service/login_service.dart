@@ -6,17 +6,17 @@ import 'package:intl/intl.dart';
 class LoginService {
   static const String baseUrl = '';
 
-  Future<void> signIn(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/signin'),
-      body: jsonEncode({'email': email, 'password': password}),
-      headers: {'Content-Type': 'application/json'},
-    );
+  // Future<void> signIn(String email, String password) async {
+  //   final response = await http.post(
+  //     Uri.parse('$baseUrl/signin'),
+  //     body: jsonEncode({'email': email, 'password': password}),
+  //     headers: {'Content-Type': 'application/json'},
+  //   );
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to sign in');
-    }
-  }
+  //   if (response.statusCode != 200) {
+  //     throw Exception('Failed to sign in');
+  //   }
+  // }
 
   Future<UserModel?> login(String email, String password) async {
     var url = Uri.parse('https://test.api.qazaqmura.kz/v1/login');
